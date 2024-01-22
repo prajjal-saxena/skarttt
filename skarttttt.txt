@@ -1,0 +1,342 @@
+import React, { useState, useEffect } from "react";
+import Table from "../../base-components/Table";
+import { ChevronsRight, ChevronsLeft, Pencil } from "lucide-react";
+import Pagination from "../../base-components/Pagination";
+import { FormSelect } from "../../base-components/Form";
+import Lucide from "../../base-components/Lucide";
+
+const Index: React.FC = () => {
+  const datatableUsers = [
+    {
+      "id" : 1,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 2,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 3,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 4,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 5,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 6,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 7,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 8,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 9,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 10,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 11,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 12,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 13,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 14,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 15,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 16,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 17,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 18,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 19,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 20,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 21,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 22,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 23,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 24,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 25,
+      "ledgerCode" : "00001",
+      "ledgerName" : "AIR FREIGHT NEW",
+      "subGroupName" : "Direct Expenses"
+    },
+    {
+      "id" : 26,
+      "ledgerCode" : "00002",
+      "ledgerName" : "AIR FREIGHT RECEIVED",
+      "subGroupName" : "	DIRECT INCOMES"
+    },
+    {
+      "id" : 27,
+      "ledgerCode" : "00003",
+      "ledgerName" : "DISCOUNT PAID",
+      "subGroupName" : "DIRECT EXPENSES"
+    },
+    {
+      "id" : 28,
+      "ledgerCode" : "00004",
+      "ledgerName" : "DISCOUNT TO CUSTOMER",
+      "subGroupName" : "DIRECT EXPENSES"
+    }
+  ]; // Your data here
+
+  const [perPage, setPerPage] = useState<number>(10);
+  const [size, setSize] = useState<number>(perPage);
+  const [current, setCurrent] = useState<number>(1);
+
+  const PerPageChange = (value: number) => {
+    setSize(value);
+    const newPerPage = Math.ceil(datatableUsers.length / value);
+    if (current > newPerPage) {
+      setCurrent(newPerPage);
+    }
+  };
+
+  const getData = (current: number, pageSize: number) => {
+    return datatableUsers.slice((current - 1) * pageSize, current * pageSize);
+  };
+
+  const PaginationChange = (page: number, pageSize: number) => {
+    setCurrent(page);
+    setSize(pageSize);
+  };
+
+  const PrevNextArrow = (
+    current: number,
+    type: string,
+    originalElement: React.ReactNode
+  ) => {
+    if (type === "prev") {
+      return <ChevronsLeft />;
+    }
+    if (type === "next") {
+      return <ChevronsRight />;
+    }
+    return originalElement;
+  };
+
+  return (
+    <div className="w-full max-w-6xl mx-auto mt-8 p-8 md:p-10 lg:p-12 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold mb-2 text-center">
+        Account Ledger
+      </h1>
+      <div className="container-fluid mt-5 mb-5">
+        <div className="row justify-content-center">
+          <div className="col-md-10">
+            <div className="card">
+              <div className="card-body p-0">
+                <div className="table-filter-info">
+                  {/* <Pagination
+                    className="pagination-data"
+                    showTotal={(total, range) => `Showing ${range[0]}-${range[1]} of ${total}`}
+                    onChange={PaginationChange}
+                    total={datatableUsers.length}
+                    current={current}
+                    pageSize={size}
+                    showSizeChanger={false}
+                    itemRender={PrevNextArrow}
+                    onShowSizeChange={PerPageChange}
+                  /> */}
+                </div>
+                <div className="overflow-x-auto">
+                  <Table className="table table-text-small mb-0 border">
+                    <Table.Thead
+                      variant="dark"
+                      className="thead-primary table-sorting bg-cyan-900"
+                    >
+                      <Table.Tr className="text-center ">
+                        <Table.Th className="whitespace-nowrap border">
+                          #
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap border">
+                          LEDGER CODE
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap border">
+                          LEDGER NAME
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap border">
+                          SUB GROUP NAME
+                        </Table.Th>
+                        <Table.Th className="whitespace-nowrap border">
+
+                        </Table.Th>
+                      </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>
+                      {getData(current, size).map((data, index) => (
+                        <Table.Tr
+                          key={data.id}
+                          className={`text-center ${
+                            index % 2 === 1 ? "bg-slate-100" : ""
+                          } hover:bg-slate-300`}
+                        >
+                         
+                          <Table.Td className="border">
+                            {data.id}
+                          </Table.Td>
+                          <Table.Td className="border">
+                            {data.ledgerCode}
+                          </Table.Td>
+                          <Table.Td className="border">
+                            {data.ledgerName}
+                          </Table.Td>
+                          <Table.Td className="border">
+                            {data.subGroupName}
+                          </Table.Td>
+                          <Table.Td className="">
+                            <Pencil className="cursor-pointer" />
+                          </Table.Td>
+                        </Table.Tr>
+                      ))}
+                    </Table.Tbody>
+                  </Table>
+                </div>
+                <div className="table-filter-info">
+                  {/* <Pagination
+                    className="pagination-data"
+                    showTotal={(total, range) => `Showing ${range[0]}-${range[1]} of ${total}`}
+                    onChange={PaginationChange}
+                    total={datatableUsers.length}
+                    current={current}
+                    pageSize={size}
+                    showSizeChanger={false}
+                    itemRender={PrevNextArrow}
+                    onShowSizeChange={PerPageChange}
+                  /> */}
+                </div>
+                {/* BEGIN: Pagination */}
+                <div className="flex flex-wrap items-center mt-6 intro-y sm:flex-row sm:flex-nowrap">
+                  <Pagination className="w-full sm:w-auto sm:mr-auto">
+                    <Pagination.Link>
+                      <Lucide icon="ChevronsLeft" className="w-4 h-4" />
+                    </Pagination.Link>
+                    <Pagination.Link>
+                      <Lucide icon="ChevronLeft" className="w-4 h-4" />
+                    </Pagination.Link>
+                    <Pagination.Link>...</Pagination.Link>
+                    <Pagination.Link>1</Pagination.Link>
+                    <Pagination.Link active>2</Pagination.Link>
+                    <Pagination.Link>3</Pagination.Link>
+                    <Pagination.Link>...</Pagination.Link>
+                    <Pagination.Link>
+                      <Lucide icon="ChevronRight" className="w-4 h-4" />
+                    </Pagination.Link>
+                    <Pagination.Link>
+                      <Lucide icon="ChevronsRight" className="w-4 h-4" />
+                    </Pagination.Link>
+                  </Pagination>
+                  <FormSelect className="w-20 mt-3 !box sm:mt-0">
+                    <option>10</option>
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                  </FormSelect>
+                </div>
+                {/* END: Pagination */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Index;
